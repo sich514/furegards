@@ -11,36 +11,36 @@
       font-family: 'Courier New', monospace;
       margin: 0;
       padding: 0;
+      overflow-x: hidden;
     }
     #chat-container {
       position: relative;
-      max-width: 100%;
-      min-height: 100vh;
       padding: 10px;
       box-sizing: border-box;
     }
     #logo {
       text-align: center;
-      font-size: 18px;
-      margin-bottom: 20px;
+      font-size: 14px;
+      margin-bottom: 15px;
     }
     #logo pre {
-      font-size: 20px;
+      font-size: 18px;
     }
     #chat-box {
       width: 100%;
-      max-height: 70vh;
+      max-height: 60vh;
       overflow-y: auto;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
       background-color: #121212;
       border-radius: 10px;
       padding: 10px;
-      font-size: 14px;
+      font-size: 12px;
     }
     .message {
       padding: 8px 15px;
       border-radius: 5px;
       margin: 5px 0;
+      word-wrap: break-word;
     }
     .user-message {
       background-color: #00FF00;
@@ -58,9 +58,10 @@
       display: flex;
       justify-content: space-between;
       padding: 5px;
+      box-sizing: border-box;
     }
     #input-container input {
-      width: 90%;
+      width: 80%;
       padding: 10px;
       font-size: 14px;
       border: none;
@@ -75,18 +76,39 @@
       border: none;
       border-radius: 5px;
       cursor: pointer;
+      width: 15%;
     }
     #input-container button:hover {
       background-color: #00cc00;
     }
     #description {
-      margin-top: 20px;
+      margin-top: 15px;
       padding: 10px;
       background-color: #121212;
       color: #00FF00;
       border-radius: 10px;
       font-size: 12px;
       text-align: center;
+    }
+
+    /* Media Query for smaller devices */
+    @media (max-width: 480px) {
+      #logo pre {
+        font-size: 14px;
+      }
+      #chat-box {
+        font-size: 12px;
+        max-height: 50vh;
+      }
+      #input-container input {
+        width: 75%;
+      }
+      #input-container button {
+        width: 20%;
+      }
+      #description {
+        font-size: 10px;
+      }
     }
   </style>
 </head>
