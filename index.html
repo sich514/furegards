@@ -182,6 +182,11 @@
     return lazyResponses[randomIndex];
   }
 
+  // Функция для проверки языка ввода
+  function isNonEnglish(text) {
+    return !/^[a-zA-Z\s]*$/.test(text);
+  }
+
   // Удаление лишних сообщений
   function manageOverflow() {
     const maxMessages = 10; // Количество сообщений, которое можно оставить
@@ -200,8 +205,10 @@
         commandLine.textContent = `$ ${command}`;
         outputDiv.appendChild(commandLine);
 
-        // Получаем случайный ленивый ответ
-        const responseText = getRandomLazyResponse();
+        // Если команда не на английском, ответим на английском
+        const responseText = isNonEnglish(command) 
+          ? "Go to Google Translate and translate it yourself, I’m not doing that for you." 
+          : getRandomLazyResponse();
 
         // Печать ответа
         const responseLine = document.createElement('div');
