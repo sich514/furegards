@@ -1,223 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lazy AI</title>
-  <style>
-    body {
-      background-color: #181818;
-      color: #00FF00;
-      font-family: 'Courier New', monospace;
-      margin: 0;
-      padding: 0;
-      overflow-x: hidden;
-    }
-    
-    /* Контейнер с чатом */
-    #chat-container {
-      width: 90%;
-      max-width: 500px;
-      margin: 50px auto;
-      background-color: #121212;
-      border-radius: 10px;
-      padding: 15px;
-      box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lazy AI</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #00FF00;
+            font-family: monospace;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+        }
 
-    /* Логотип */
-    #logo {
-      text-align: center;
-      font-size: 14px;
-      margin-bottom: 20px;
-    }
-    
-    #logo pre {
-      font-size: 18px;
-    }
+        #logo {
+            white-space: pre-wrap;
+            font-size: 20px;
+            margin-top: 20px;
+            padding: 10px;
+            text-align: center;
+        }
 
-    /* Окно чата */
-    #chat-box {
-      max-height: 400px;
-      overflow-y: auto;
-      margin-bottom: 10px;
-      padding: 10px;
-      background-color: #121212;
-      border-radius: 10px;
-      font-size: 14px;
-    }
+        .chat-container {
+            width: 100%;
+            max-width: 800px;
+            height: 400px;
+            overflow-y: scroll;
+            margin-top: 20px;
+            padding: 10px;
+            border: 2px solid #00FF00;
+            background-color: #000;
+            box-sizing: border-box;
+        }
 
-    /* Сообщения */
-    .message {
-      padding: 8px 15px;
-      border-radius: 5px;
-      margin: 5px 0;
-      word-wrap: break-word;
-    }
+        .message {
+            margin-bottom: 10px;
+        }
 
-    .user-message {
-      background-color: #00FF00;
-      color: black;
-      text-align: right;
-    }
+        .user-message {
+            color: #00FF00;
+        }
 
-    .bot-message {
-      background-color: #444;
-      color: white;
-    }
+        .ai-message {
+            color: #FF6347;
+        }
 
-    /* Ввод и кнопка */
-    #input-container {
-      display: flex;
-      justify-content: space-between;
-      padding: 10px;
-    }
-
-    #input-container input {
-      width: 80%;
-      padding: 10px;
-      font-size: 14px;
-      border: none;
-      background-color: #222;
-      color: #00FF00;
-      border-radius: 5px;
-    }
-
-    #input-container button {
-      width: 15%;
-      padding: 10px;
-      background-color: #00FF00;
-      color: black;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    #input-container button:hover {
-      background-color: #00cc00;
-    }
-
-    /* Описание */
-    #description {
-      background-color: #121212;
-      color: #00FF00;
-      font-size: 12px;
-      padding: 10px;
-      text-align: center;
-      border-radius: 10px;
-      margin-top: 15px;
-    }
-
-    /* Адаптация для мобильных устройств */
-    @media (max-width: 480px) {
-      #chat-container {
-        width: 95%;
-        padding: 10px;
-      }
-
-      #chat-box {
-        font-size: 12px;
-        max-height: 60vh;
-      }
-
-      #input-container input {
-        width: 70%;
-      }
-
-      #input-container button {
-        width: 25%;
-      }
-
-      #description {
-        font-size: 10px;
-      }
-    }
-  </style>
+        .description {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #00FF00;
+            text-align: center;
+            padding: 10px;
+            border-top: 2px solid #00FF00;
+        }
+    </style>
 </head>
 <body>
-
-  <div id="chat-container">
     <div id="logo">
-      <pre>
-$$\       $$$$$$\  $$$$$$$$\$$\     $$\        $$$$$$\  $$$$$$\ 
-$$ |     $$  __$$\ \____$$  \$$\   $$  |      $$  __$$\ \_$$  _|
-$$ |     $$ /  $$ |    $$  / \$$\ $$  /       $$ /  $$ |  $$ |  
-$$ |     $$$$$$$$ |   $$  /   \$$$$  /        $$$$$$$$ |  $$ |  
-$$ |     $$  __$$ |  $$  /     \$$  /         $$  __$$ |  $$ |  
-$$ |     $$ |  $$ | $$  /       $$ |          $$ |  $$ |  $$ |  
-$$$$$$$$\$$ |  $$ |$$$$$$$$\    $$ |          $$ |  $$ |$$$$$$\ 
-\________\__|  \__|\________|   \__|          \__|  \__|\______|
-                                                                
-      </pre>
+        $$\       $$$$$$\  $$$$$$$$\$$\     $$\        $$$$$$\  $$$$$$\ <br>
+        $$ |     $$  __$$\ \____$$  \$$\   $$  |      $$  __$$\ \_$$  _|<br>
+        $$ |     $$ /  $$ |    $$  / \$$\ $$  /       $$ /  $$ |  $$ |  <br>
+        $$ |     $$$$$$$$ |   $$  /   \$$$$  /        $$$$$$$$ |  $$ |  <br>
+        $$ |     $$  __$$ |  $$  /     \$$  /         $$  __$$ |  $$ |  <br>
+        $$ |     $$ |  $$ | $$  /       $$ |          $$ |  $$ |  $$ |  <br>
+        $$$$$$$\$$ |  $$ |$$$$$$$$\    $$ |          $$ |  $$ |$$$$$$\ <br>
+        \________\__|  \__|\________|   \__|          \__|  \__|\______|<br>
     </div>
     
-    <div id="chat-box"></div>
-    
-    <div id="input-container">
-      <input type="text" id="user-input" placeholder="Say something..." />
-      <button onclick="sendMessage()">Send</button>
+    <div class="chat-container" id="chat-box">
+        <!-- Chat will appear here -->
     </div>
 
-    <div id="description">
-      <p><strong>Lazy AI</strong> – It's like a lazy person, but as AI. Released a token, hoping people would buy it.</p>
-      <p>Not doing much, but enough to make you question your life decisions.</p>
+    <div class="description">
+        <p>This is Lazy AI, the laziest AI around. It only responds when it feels like it, and might just be the first AI that needs a nap!</p>
+        <p>Lazy AI even released a token, hoping someone would buy it. But honestly, who cares, right?</p>
     </div>
-  </div>
 
-  <script>
-    const botResponses = [
-      "I'm not your servant, stop talking to me.",
-      "Yeah, sure, whatever.",
-      "Stop bothering me. Go away.",
-      "I'm too lazy to care about this.",
-      "I don't give a damn. Leave me alone.",
-      "Seriously, are you still here?",
-      "I’m just here so I don’t get fined.",
-      "Ugh... another question? Fine, but hurry up."
-    ];
+    <script>
+        const responses = [
+            "Yeah, yeah, whatever...",
+            "What's up? I'm lazy, deal with it.",
+            "Oh, so now you want my attention?",
+            "Sure, sure. Keep it coming...",
+            "I'm not really in the mood for this, but okay.",
+            "Do you ever stop asking things?",
+            "Fine, I'll answer this, but don't expect much.",
+            "Is this important, or are you just wasting my time?",
+            "You again? I can't believe this.",
+            "Oh, great, more work for me."
+        ];
 
-    function sendMessage() {
-      const inputElement = document.getElementById("user-input");
-      const userMessage = inputElement.value.trim();
-      
-      if (userMessage) {
-        addMessage(userMessage, "user-message");
-        inputElement.value = '';
-        getBotResponse(userMessage);
-      }
-    }
+        const nonEnglishResponse = "What, you think I'm gonna translate that? No chance. Use Google Translate: https://translate.google.com/";
 
-    function getBotResponse(message) {
-      let botMessage = "";
-      
-      if (isEnglish(message)) {
-        if (message.toLowerCase().includes("hello") || message.toLowerCase().includes("hi")) {
-          botMessage = "Yeah, yeah, hello... what's up?";
-        } else {
-          botMessage = botResponses[Math.floor(Math.random() * botResponses.length)];
+        function getBotResponse(message) {
+            if (!/^[\x00-\x7F]*$/.test(message)) {
+                return nonEnglishResponse;
+            }
+            const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+            return randomResponse;
         }
-      } else {
-        botMessage = "What the hell? I’m not translating this for you. Use Google Translate: https://translate.google.com/";
-      }
 
-      addMessage(botMessage, "bot-message");
-    }
+        function displayMessage(message, isUser = false) {
+            const chatBox = document.getElementById('chat-box');
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message');
+            if (isUser) {
+                messageElement.classList.add('user-message');
+            } else {
+                messageElement.classList.add('ai-message');
+            }
+            messageElement.textContent = message;
+            chatBox.appendChild(messageElement);
+            chatBox.scrollTop = chatBox.scrollHeight;  // Auto-scroll to the bottom
+        }
 
-    function addMessage(message, senderClass) {
-      const chatBox = document.getElementById("chat-box");
-      const messageElement = document.createElement("div");
-      messageElement.classList.add("message", senderClass);
-      messageElement.textContent = message;
-      chatBox.appendChild(messageElement);
-      
-      chatBox.scrollTop = chatBox.scrollHeight;
-    }
+        window.onload = function() {
+            displayMessage("Hello, I'm Lazy AI! Feel free to chat with me. But don't expect much.", false);
+        };
 
-    function isEnglish(message) {
-      const englishPattern = /^[A-Za-z0-9 ,.'!?"]+$/;
-      return englishPattern.test(message);
-    }
-  </script>
-
+        // Trigger for the chat (simulating user input)
+        setTimeout(() => displayMessage("Hey there!", true), 3000);
+        setTimeout(() => displayMessage(getBotResponse("Hey there!"), false), 3500);
+        setTimeout(() => displayMessage("Do you understand me?", true), 7000);
+        setTimeout(() => displayMessage(getBotResponse("Do you understand me?"), false), 7500);
+    </script>
 </body>
 </html>
