@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terminal Site</title>
+  <style>
+    /* Основные стили */
+    body {
+      background-color: black;
+      color: #00FF00;
+      font-family: monospace;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    #terminal {
+      width: 90%;
+      max-width: 600px;
+      height: 80vh;
+      border: 1px solid #00FF00;
+      padding: 10px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    .input-line {
+      display: flex;
+      align-items: center;
+    }
+
+    .prompt {
+      margin-right: 5px;
+    }
+
+    .output {
+      margin: 5px 0;
+      word-wrap: break-word;
+    }
+
+    input {
+      background-color: black;
+      color: #00FF00;
+      border: none;
+      outline: none;
+      width: 100%;
+    }
+
+    /* Стили для мобильных устройств */
+    @media (max-width: 600px) {
+      #terminal {
+        height: 85vh;
+        padding: 8px;
+      }
+
+      .prompt {
+        font-size: 1em;
+      }
+
+      input {
+        font-size: 1em;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div id="terminal">
+  <div class="output">Welcome to the terminal.</div>
+  <div id="output"></div>
+  <div class="input-line">
+    <span class="prompt">$</span>
+    <input type="text" id="input" autofocus autocomplete="off" />
+  </div>
+</div>
+
+<script>
+  const inputField = document.getElementById('input');
+  const outputDiv = document.getElementById('output');
+
+  inputField.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+      const command = inputField.value.trim();
+      if (command) {
+        // Добавление команды и ответа
+        const commandLine = document.createElement('div');
+        commandLine.className = 'output';
+        commandLine.textContent = `$ ${command}`;
+        outputDiv.appendChild(commandLine);
+
+        const responseLine = document.createElement('div');
+        responseLine.className = 'output';
+        responseLine.textContent = 'Fuck you, Regards';
+        outputDiv.appendChild(responseLine);
+
+        // Прокрутка вниз
+        outputDiv.scrollTop = outputDiv.scrollHeight;
+      }
+      inputField.value = ''; // Очищаем поле ввода
+    }
+  });
+</script>
+
+</body>
+</html>
