@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Terminal Site</title>
+  <title>Lazy AI Terminal</title>
   <style>
-    /* Основные стили */
+    /* Основные стили терминала */
     body {
       background-color: black;
-      color: #00FF00;
+      color: #00aa00;
       font-family: monospace;
       display: flex;
       justify-content: center;
@@ -22,12 +22,17 @@
       width: 90%;
       max-width: 600px;
       height: 80vh;
-      border: 1px solid #00FF00;
+      border: 1px solid #00aa00;
       padding: 10px;
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
+    }
+
+    .output {
+      margin: 5px 0;
+      word-wrap: break-word;
     }
 
     .input-line {
@@ -39,40 +44,19 @@
       margin-right: 5px;
     }
 
-    .output {
-      margin: 5px 0;
-      word-wrap: break-word;
-    }
-
     input {
       background-color: black;
-      color: #00FF00;
+      color: #00aa00;
       border: none;
       outline: none;
       width: 100%;
-    }
-
-    /* Стили для мобильных устройств */
-    @media (max-width: 600px) {
-      #terminal {
-        height: 85vh;
-        padding: 8px;
-      }
-
-      .prompt {
-        font-size: 1em;
-      }
-
-      input {
-        font-size: 1em;
-      }
     }
   </style>
 </head>
 <body>
 
 <div id="terminal">
-  <div class="output">Welcome to the terminal.</div>
+  <div class="output">Welcome to LazyBot Terminal.</div>
   <div id="output"></div>
   <div class="input-line">
     <span class="prompt">$</span>
@@ -84,19 +68,39 @@
   const inputField = document.getElementById('input');
   const outputDiv = document.getElementById('output');
 
+  // Набор ответов ленивого ИИ
+  const lazyResponses = [
+    "Whatever... I'm too tired for this.",
+    "Can't you figure it out yourself?",
+    "Ugh, why are you even asking?",
+    "Seriously? Do it yourself.",
+    "I don't feel like answering that.",
+    "Just google it.",
+    "I'm on a break... leave me alone.",
+    "Figure it out. I'm busy doing nothing.",
+    "Yawn... please go bother someone else.",
+    "Not today, maybe not ever."
+  ];
+
+  // Функция для получения случайного ленивого ответа
+  function getLazyResponse() {
+    return lazyResponses[Math.floor(Math.random() * lazyResponses.length)];
+  }
+
   inputField.addEventListener('keydown', function(event) {
     if (event.key === 'Enter') {
       const command = inputField.value.trim();
       if (command) {
-        // Добавление команды и ответа
+        // Печать команды пользователя
         const commandLine = document.createElement('div');
         commandLine.className = 'output';
         commandLine.textContent = `$ ${command}`;
         outputDiv.appendChild(commandLine);
 
+        // Печать ленивого ответа
         const responseLine = document.createElement('div');
         responseLine.className = 'output';
-        responseLine.textContent = 'Fuck you, Regards';
+        responseLine.textContent = getLazyResponse();
         outputDiv.appendChild(responseLine);
 
         // Прокрутка вниз
