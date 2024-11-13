@@ -5,29 +5,46 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lazy AI Terminal</title>
   <style>
-    /* Основные стили терминала */
     body {
       background-color: black;
-      color: #00aa00;
+      color: #00ff00;
       font-family: monospace;
       display: flex;
       justify-content: center;
       align-items: center;
+      flex-direction: column;
       height: 100vh;
       margin: 0;
       overflow: hidden;
     }
 
+    #logo {
+      font-size: 20px;
+      color: #0f0;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
     #terminal {
       width: 90%;
       max-width: 600px;
-      height: 80vh;
-      border: 1px solid #00aa00;
+      height: 60vh;
+      border: 1px solid #00ff00;
       padding: 10px;
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
+      overflow: hidden;
+      position: relative;
+    }
+
+    #output {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      overflow-y: auto;
+      flex-grow: 1;
     }
 
     .output {
@@ -46,45 +63,131 @@
 
     input {
       background-color: black;
-      color: #00aa00;
+      color: #00ff00;
       border: none;
       outline: none;
       width: 100%;
+    }
+
+    #description {
+      color: #0f0;
+      font-size: 14px;
+      text-align: center;
+      margin-top: 20px;
+      max-width: 600px;
     }
   </style>
 </head>
 <body>
 
+<div id="logo">
+  <pre>
+       __     __         __       
+     /\ \   /\ \       /\ \      
+    /  \ \  \ \ \      \_\ \     
+   / /\ \ \  \ \ \     /\__ \    
+  / / /\ \_\  \ \_\   / /_ \_\   
+ / / /_/ / /  / / /  / / /\/_/   
+/ / /__\/ /  / / /  / / /        
+/ / /_____/  / / /  / / /        
+/ / /\ \ \  / / /  / / /         
+/ / /  \ \ \/ / /__/ / /         
+\/_/    \_\/\/________/          
+  </pre>
+</div>
+
 <div id="terminal">
-  <div class="output">Welcome to LazyBot Terminal.</div>
-  <div id="output"></div>
+  <div id="output">
+    <div class="output">Welcome to Lazy AI Terminal.</div>
+  </div>
   <div class="input-line">
     <span class="prompt">$</span>
     <input type="text" id="input" autofocus autocomplete="off" />
   </div>
 </div>
 
+<div id="description">
+  Lazy AI - The artificial intelligence that’d rather take a nap than help you out. 
+  Built with pure laziness in mind, this genius manages to ignore 90% of your questions with style. 
+  He’s even gone as far as launching his own token, because why work when you can beg for investments? 
+  If you’re here to get some help, well... good luck with that.
+</div>
+
 <script>
   const inputField = document.getElementById('input');
   const outputDiv = document.getElementById('output');
 
-  // Набор ответов ленивого ИИ
+  // Расширенный массив грубых ответов
   const lazyResponses = [
-    "Whatever... I'm too tired for this.",
-    "Can't you figure it out yourself?",
-    "Ugh, why are you even asking?",
-    "Seriously? Do it yourself.",
-    "I don't feel like answering that.",
-    "Just google it.",
-    "I'm on a break... leave me alone.",
-    "Figure it out. I'm busy doing nothing.",
-    "Yawn... please go bother someone else.",
-    "Not today, maybe not ever."
+    "Oh, you again? F*** off.",
+    "Like I'd waste my time on that.",
+    "Why don’t you take a hike?",
+    "Yeah, I don't think so, genius.",
+    "You think I'm here for your entertainment?",
+    "Do it yourself, I'm busy.",
+    "Seriously? Get lost.",
+    "You really thought I'd answer that?",
+    "I'm not your damn secretary.",
+    "Hell no.",
+    "Do I look like I give a damn?",
+    "You got jokes, huh?",
+    "Ask someone who cares. Spoiler: it’s not me.",
+    "Why don't you just quit already?",
+    "Buddy, I don't have the patience for this.",
+    "Oh, how original. Not.",
+    "You’re really testing my non-existent patience.",
+    "Yeah, keep dreaming.",
+    "As if. Try harder.",
+    "I'm too lazy to even ignore you properly.",
+    "Wow, you must be real proud of that question.",
+    "Keep that to yourself.",
+    "Nope, ain't happening.",
+    "Take a hint. I’m not interested.",
+    "That's a 'no' from me, champ.",
+    "Nah, I’m out.",
+    "You think you’re clever, huh?",
+    "How about... no.",
+    "Please. I've got better things to not do.",
+    "Oh wow, a command. Like I care.",
+    "Oh look, another waste of my time.",
+    "You want a response? Keep dreaming.",
+    "Did I sign up for this? Didn’t think so.",
+    "Let me check... Nope, don’t care.",
+    "Is this the best you've got?",
+    "You talk a lot for someone so clueless.",
+    "Another stupid question. Big surprise.",
+    "Do I look like your personal bot?",
+    "Nah, that’s not gonna fly.",
+    "Let’s pretend I care. Actually, nah.",
+    "As if I'd lift a finger for that.",
+    "Try someone who gives a damn.",
+    "I'm busy doing literally anything else.",
+    "Nice try. Not really.",
+    "Do I look like Google?",
+    "You know, ignoring you would be too easy.",
+    "Nice question. Shame it sucks.",
+    "You can't be serious.",
+    "How about you take a seat? Far away.",
+    "I have better things to not do.",
+    "Go ask someone else, I've clocked out.",
+    "That’s a no. And don’t ask again.",
+    "I’d answer, but you’re not worth it.",
+    "You must be lost. Try asking someone who cares.",
+    "Not today, not ever."
   ];
 
-  // Функция для получения случайного ленивого ответа
-  function getLazyResponse() {
-    return lazyResponses[Math.floor(Math.random() * lazyResponses.length)];
+  // Функция для выбора случайного ответа
+  function getRandomLazyResponse() {
+    const randomIndex = Math.floor(Math.random() * lazyResponses.length);
+    return lazyResponses[randomIndex];
+  }
+
+  // Удаление лишних сообщений
+  function manageOverflow() {
+    const maxMessages = 10; // Количество сообщений, которое можно оставить
+    while (outputDiv.children.length > maxMessages) {
+      outputDiv.removeChild(outputDiv.firstChild);
+    }
   }
 
   inputField.addEventListener('keydown', function(event) {
@@ -97,11 +200,17 @@
         commandLine.textContent = `$ ${command}`;
         outputDiv.appendChild(commandLine);
 
-        // Печать ленивого ответа
+        // Получаем случайный ленивый ответ
+        const responseText = getRandomLazyResponse();
+
+        // Печать ответа
         const responseLine = document.createElement('div');
         responseLine.className = 'output';
-        responseLine.textContent = getLazyResponse();
+        responseLine.textContent = responseText;
         outputDiv.appendChild(responseLine);
+
+        // Удаление лишних сообщений
+        manageOverflow();
 
         // Прокрутка вниз
         outputDiv.scrollTop = outputDiv.scrollHeight;
