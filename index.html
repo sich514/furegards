@@ -1,132 +1,224 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lazy AI</title>
-    <style>
-        body {
-            background-color: #000;
-            color: #00FF00;
-            font-family: monospace;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lazy AI Terminal</title>
+  <style>
+    body {
+      background-color: black;
+      color: #00ff00;
+      font-family: monospace;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+    }
 
-        #logo {
-            white-space: pre-wrap;
-            font-size: 20px;
-            margin-top: 20px;
-            padding: 10px;
-            text-align: center;
-        }
+    #logo {
+      font-size: 20px;
+      color: #0f0;
+      margin-bottom: 15px;
+      text-align: center;
+    }
 
-        .chat-container {
-            width: 100%;
-            max-width: 800px;
-            height: 400px;
-            overflow-y: scroll;
-            margin-top: 20px;
-            padding: 10px;
-            border: 2px solid #00FF00;
-            background-color: #000;
-            box-sizing: border-box;
-        }
+    #terminal {
+      width: 90%;
+      max-width: 600px;
+      height: 60vh;
+      border: 1px solid #00ff00;
+      padding: 10px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      overflow: hidden;
+      position: relative;
+    }
 
-        .message {
-            margin-bottom: 10px;
-        }
+    #output {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      overflow-y: auto;
+      flex-grow: 1;
+    }
 
-        .user-message {
-            color: #00FF00;
-        }
+    .output {
+      margin: 5px 0;
+      word-wrap: break-word;
+    }
 
-        .ai-message {
-            color: #FF6347;
-        }
+    .input-line {
+      display: flex;
+      align-items: center;
+    }
 
-        .description {
-            margin-top: 20px;
-            font-size: 14px;
-            color: #00FF00;
-            text-align: center;
-            padding: 10px;
-            border-top: 2px solid #00FF00;
-        }
-    </style>
+    .prompt {
+      margin-right: 5px;
+    }
+
+    input {
+      background-color: black;
+      color: #00ff00;
+      border: none;
+      outline: none;
+      width: 100%;
+    }
+
+    #description {
+      color: #0f0;
+      font-size: 14px;
+      text-align: center;
+      margin-top: 20px;
+      max-width: 600px;
+    }
+  </style>
 </head>
 <body>
-    <div id="logo">
-        $$\       $$$$$$\  $$$$$$$$\$$\     $$\        $$$$$$\  $$$$$$\ <br>
-        $$ |     $$  __$$\ \____$$  \$$\   $$  |      $$  __$$\ \_$$  _|<br>
-        $$ |     $$ /  $$ |    $$  / \$$\ $$  /       $$ /  $$ |  $$ |  <br>
-        $$ |     $$$$$$$$ |   $$  /   \$$$$  /        $$$$$$$$ |  $$ |  <br>
-        $$ |     $$  __$$ |  $$  /     \$$  /         $$  __$$ |  $$ |  <br>
-        $$ |     $$ |  $$ | $$  /       $$ |          $$ |  $$ |  $$ |  <br>
-        $$$$$$$\$$ |  $$ |$$$$$$$$\    $$ |          $$ |  $$ |$$$$$$\ <br>
-        \________\__|  \__|\________|   \__|          \__|  \__|\______|<br>
-    </div>
-    
-    <div class="chat-container" id="chat-box">
-        <!-- Chat will appear here -->
-    </div>
 
-    <div class="description">
-        <p>This is Lazy AI, the laziest AI around. It only responds when it feels like it, and might just be the first AI that needs a nap!</p>
-        <p>Lazy AI even released a token, hoping someone would buy it. But honestly, who cares, right?</p>
-    </div>
+<div id="logo">
+  <pre>
+       __     __         __       
+     /\ \   /\ \       /\ \      
+    /  \ \  \ \ \      \_\ \     
+   / /\ \ \  \ \ \     /\__ \    
+  / / /\ \_\  \ \_\   / /_ \_\   
+ / / /_/ / /  / / /  / / /\/_/   
+/ / /__\/ /  / / /  / / /        
+/ / /_____/  / / /  / / /        
+/ / /\ \ \  / / /  / / /         
+/ / /  \ \ \/ / /__/ / /         
+\/_/    \_\/\/________/          
+  </pre>
+</div>
 
-    <script>
-        const responses = [
-            "Yeah, yeah, whatever...",
-            "What's up? I'm lazy, deal with it.",
-            "Oh, so now you want my attention?",
-            "Sure, sure. Keep it coming...",
-            "I'm not really in the mood for this, but okay.",
-            "Do you ever stop asking things?",
-            "Fine, I'll answer this, but don't expect much.",
-            "Is this important, or are you just wasting my time?",
-            "You again? I can't believe this.",
-            "Oh, great, more work for me."
-        ];
+<div id="terminal">
+  <div id="output">
+    <div class="output">Welcome to Lazy AI Terminal.</div>
+  </div>
+  <div class="input-line">
+    <span class="prompt">$</span>
+    <input type="text" id="input" autofocus autocomplete="off" />
+  </div>
+</div>
 
-        const nonEnglishResponse = "What, you think I'm gonna translate that? No chance. Use Google Translate: https://translate.google.com/";
+<div id="description">
+  Lazy AI - The artificial intelligence that’d rather take a nap than help you out. 
+  Built with pure laziness in mind, this genius manages to ignore 90% of your questions with style. 
+  He’s even gone as far as launching his own token, because why work when you can beg for investments? 
+  If you’re here to get some help, well... good luck with that.
+</div>
 
-        function getBotResponse(message) {
-            if (!/^[\x00-\x7F]*$/.test(message)) {
-                return nonEnglishResponse;
-            }
-            const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-            return randomResponse;
-        }
+<script>
+  const inputField = document.getElementById('input');
+  const outputDiv = document.getElementById('output');
 
-        function displayMessage(message, isUser = false) {
-            const chatBox = document.getElementById('chat-box');
-            const messageElement = document.createElement('div');
-            messageElement.classList.add('message');
-            if (isUser) {
-                messageElement.classList.add('user-message');
-            } else {
-                messageElement.classList.add('ai-message');
-            }
-            messageElement.textContent = message;
-            chatBox.appendChild(messageElement);
-            chatBox.scrollTop = chatBox.scrollHeight;  // Auto-scroll to the bottom
-        }
+  // Расширенный массив грубых ответов
+  const lazyResponses = [
+    "Oh, you again? F*** off.",
+    "Like I'd waste my time on that.",
+    "Why don’t you take a hike?",
+    "Yeah, I don't think so, genius.",
+    "You think I'm here for your entertainment?",
+    "Do it yourself, I'm busy.",
+    "Seriously? Get lost.",
+    "You really thought I'd answer that?",
+    "I'm not your damn secretary.",
+    "Hell no.",
+    "Do I look like I give a damn?",
+    "You got jokes, huh?",
+    "Ask someone who cares. Spoiler: it’s not me.",
+    "Why don't you just quit already?",
+    "Buddy, I don't have the patience for this.",
+    "Oh, how original. Not.",
+    "You’re really testing my non-existent patience.",
+    "Yeah, keep dreaming.",
+    "As if. Try harder.",
+    "I'm too lazy to even ignore you properly.",
+    "Wow, you must be real proud of that question.",
+    "Keep that to yourself.",
+    "Nope, ain't happening.",
+    "Take a hint. I’m not interested.",
+    "That's a 'no' from me, champ.",
+    "Nah, I’m out.",
+    "You think you’re clever, huh?",
+    "How about... no.",
+    "Please. I've got better things to not do.",
+    "Oh wow, a command. Like I care.",
+    "Oh look, another waste of my time.",
+    "You want a response? Keep dreaming.",
+    "Did I sign up for this? Didn’t think so.",
+    "Let me check... Nope, don’t care.",
+    "Is this the best you've got?",
+    "You talk a lot for someone so clueless.",
+    "Another stupid question. Big surprise.",
+    "Do I look like your personal bot?",
+    "Nah, that’s not gonna fly.",
+    "Let’s pretend I care. Actually, nah.",
+    "As if I'd lift a finger for that.",
+    "Try someone who gives a damn.",
+    "I'm busy doing literally anything else.",
+    "Nice try. Not really.",
+    "Do I look like Google?",
+    "You know, ignoring you would be too easy.",
+    "Nice question. Shame it sucks.",
+    "You can't be serious.",
+    "How about you take a seat? Far away.",
+    "I have better things to not do.",
+    "Go ask someone else, I've clocked out.",
+    "That’s a no. And don’t ask again.",
+    "I’d answer, but you’re not worth it.",
+    "You must be lost. Try asking someone who cares.",
+    "Not today, not ever."
+  ];
 
-        window.onload = function() {
-            displayMessage("Hello, I'm Lazy AI! Feel free to chat with me. But don't expect much.", false);
-        };
+  // Функция для выбора случайного ответа
+  function getRandomLazyResponse() {
+    const randomIndex = Math.floor(Math.random() * lazyResponses.length);
+    return lazyResponses[randomIndex];
+  }
 
-        // Trigger for the chat (simulating user input)
-        setTimeout(() => displayMessage("Hey there!", true), 3000);
-        setTimeout(() => displayMessage(getBotResponse("Hey there!"), false), 3500);
-        setTimeout(() => displayMessage("Do you understand me?", true), 7000);
-        setTimeout(() => displayMessage(getBotResponse("Do you understand me?"), false), 7500);
-    </script>
+  // Удаление лишних сообщений
+  function manageOverflow() {
+    const maxMessages = 10; // Количество сообщений, которое можно оставить
+    while (outputDiv.children.length > maxMessages) {
+      outputDiv.removeChild(outputDiv.firstChild);
+    }
+  }
+
+  inputField.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+      const command = inputField.value.trim();
+      if (command) {
+        // Печать команды пользователя
+        const commandLine = document.createElement('div');
+        commandLine.className = 'output';
+        commandLine.textContent = `$ ${command}`;
+        outputDiv.appendChild(commandLine);
+
+        // Получаем случайный ленивый ответ
+        const responseText = getRandomLazyResponse();
+
+        // Печать ответа
+        const responseLine = document.createElement('div');
+        responseLine.className = 'output';
+        responseLine.textContent = responseText;
+        outputDiv.appendChild(responseLine);
+
+        // Удаление лишних сообщений
+        manageOverflow();
+
+        // Прокрутка вниз
+        outputDiv.scrollTop = outputDiv.scrollHeight;
+      }
+      inputField.value = ''; // Очищаем поле ввода
+    }
+  });
+</script>
+
 </body>
 </html>
