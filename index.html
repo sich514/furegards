@@ -1,135 +1,167 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lazy AI Chat</title>
-    <style>
-        #chat {
-            max-width: 400px;
-            margin: 20px auto;
-            padding: 10px;
-            background: #333;
-            color: white;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-        }
-
-        #messages {
-            max-height: 300px;
-            overflow-y: auto;
-            margin-bottom: 10px;
-        }
-
-        input[type="text"] {
-            width: calc(100% - 22px);
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #555;
-            border-radius: 5px;
-            background-color: #222;
-            color: white;
-        }
-
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #555;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #444;
-        }
-
-        #logo {
-            text-align: center;
-            font-size: 20px;
-            margin-bottom: 20px;
-        }
-
-        pre {
-            color: #00FF00;
-            font-family: monospace;
-            font-size: 18px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lazy AI</title>
+  <style>
+    body {
+      background-color: #181818;
+      color: #00FF00;
+      font-family: 'Courier New', monospace;
+      margin: 0;
+      padding: 0;
+    }
+    #chat-container {
+      position: relative;
+      max-width: 100%;
+      min-height: 100vh;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+    #logo {
+      text-align: center;
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+    #logo pre {
+      font-size: 20px;
+    }
+    #chat-box {
+      width: 100%;
+      max-height: 70vh;
+      overflow-y: auto;
+      margin-bottom: 20px;
+      background-color: #121212;
+      border-radius: 10px;
+      padding: 10px;
+      font-size: 14px;
+    }
+    .message {
+      padding: 8px 15px;
+      border-radius: 5px;
+      margin: 5px 0;
+    }
+    .user-message {
+      background-color: #00FF00;
+      color: black;
+      text-align: right;
+    }
+    .bot-message {
+      background-color: #444;
+      color: white;
+    }
+    #input-container {
+      position: absolute;
+      bottom: 10px;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 5px;
+    }
+    #input-container input {
+      width: 90%;
+      padding: 10px;
+      font-size: 14px;
+      border: none;
+      background-color: #222;
+      color: #00FF00;
+      border-radius: 5px;
+    }
+    #input-container button {
+      padding: 10px;
+      background-color: #00FF00;
+      color: black;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #input-container button:hover {
+      background-color: #00cc00;
+    }
+  </style>
 </head>
 <body>
 
+  <div id="chat-container">
     <div id="logo">
-        <pre>
-       _______     _______       _______       _______    
-      / _____|   / _____|     / _____|     / _____|   
-     | |         | |          | |           | |         
-     | |__       | |____      | |____       | |____     
-     |  __|      |  ___|     |  ___|      |  ___|     
-     | |___      | |____     | |____      | |____      
-     |_____|     |______|    |______|     |______|     
-        </pre>
+      <pre>
+  __     __         __       
+ /\ \   /\ \       /\ \      
+/  \ \  \ \ \      \_\ \     
+/ /\ \ \  \ \ \     /\__ \    
+/ / /\ \_\  \ \_\   / /_ \_\   
+/ / /_/ / /  / / /  / / /\/_/   
+/ / /__\/ /  / / /  / / /        
+/ / /_____/  / / /  / / /        
+/ / /\ \ \  / / /  / / /         
+/ / /  \ \ \/ / /__/ / /         
+\/_/    \_\/\/________/          
+      </pre>
     </div>
-
-    <div id="chat">
-        <div id="messages"></div>
-        <input type="text" id="userInput" placeholder="Type your message..." />
-        <button onclick="sendMessage()">Send</button>
+    
+    <div id="chat-box"></div>
+    
+    <div id="input-container">
+      <input type="text" id="user-input" placeholder="Say something..." />
+      <button onclick="sendMessage()">Send</button>
     </div>
+  </div>
 
-    <script>
-        // Приветственные ответы на английском
-        const greetings = [
-            "Yeah, yeah, hello, hello!",
-            "Yo! What's up?",
-            "Hey! How's it going?",
-            "Hi there! What's happening?",
-            "Yo, what do you want?"
-        ];
+  <script>
+    const botResponses = [
+      "I'm not your servant, stop talking to me.",
+      "Yeah, sure, whatever.",
+      "Stop bothering me. Go away.",
+      "I'm too lazy to care about this.",
+      "I don't give a damn. Leave me alone.",
+      "Seriously, are you still here?",
+      "I’m just here so I don’t get fined.",
+      "Ugh... another question? Fine, but hurry up."
+    ];
 
-        // Ответы на неанглийские сообщения (с переводом)
-        const nonEnglishResponse = "What the hell? I’m not translating this for you. Use Google Translate: https://translate.google.com/";
+    function sendMessage() {
+      const inputElement = document.getElementById("user-input");
+      const userMessage = inputElement.value.trim();
+      
+      if (userMessage) {
+        addMessage(userMessage, "user-message");
+        inputElement.value = '';
+        getBotResponse(userMessage);
+      }
+    }
 
-        // Общие ответы из списка
-        const commonResponses = [
-            "Seriously? Can't believe it.",
-            "No way, I'm not doing that.",
-            "Come on, are you serious?",
-            "Nah, I’m not gonna do that.",
-            "Don’t even ask."
-        ];
-
-        // Функция для отправки сообщения
-        function sendMessage() {
-            const userInput = document.getElementById('userInput').value;
-            const messagesDiv = document.getElementById('messages');
-            
-            // Добавляем сообщение пользователя
-            const userMessage = document.createElement('p');
-            userMessage.textContent = "You: " + userInput;
-            messagesDiv.appendChild(userMessage);
-
-            // Проверяем, на английском ли написано сообщение
-            if (isEnglish(userInput)) {
-                const botMessage = document.createElement('p');
-                botMessage.textContent = "Lazy AI: " + greetings[Math.floor(Math.random() * greetings.length)];
-                messagesDiv.appendChild(botMessage);
-            } else {
-                const botMessage = document.createElement('p');
-                botMessage.textContent = "Lazy AI: " + nonEnglishResponse;
-                messagesDiv.appendChild(botMessage);
-            }
-
-            // Очищаем поле ввода
-            document.getElementById('userInput').value = '';
+    function getBotResponse(message) {
+      let botMessage = "";
+      
+      if (isEnglish(message)) {
+        if (message.toLowerCase().includes("hello") || message.toLowerCase().includes("hi")) {
+          botMessage = "Yeah, yeah, hello... what's up?";
+        } else {
+          botMessage = botResponses[Math.floor(Math.random() * botResponses.length)];
         }
+      } else {
+        botMessage = "What the hell? I’m not translating this for you. Use Google Translate: https://translate.google.com/";
+      }
 
-        // Функция для проверки, на английском ли текст
-        function isEnglish(text) {
-            // Регулярное выражение для поиска латинских букв в сообщении
-            return /[a-zA-Z]/.test(text);
-        }
-    </script>
+      addMessage(botMessage, "bot-message");
+    }
+
+    function addMessage(message, senderClass) {
+      const chatBox = document.getElementById("chat-box");
+      const messageElement = document.createElement("div");
+      messageElement.classList.add("message", senderClass);
+      messageElement.textContent = message;
+      chatBox.appendChild(messageElement);
+      
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function isEnglish(message) {
+      const englishPattern = /^[A-Za-z0-9 ,.'!?"]+$/;
+      return englishPattern.test(message);
+    }
+  </script>
+
 </body>
 </html>
